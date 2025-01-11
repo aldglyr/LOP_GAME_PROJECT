@@ -1,80 +1,87 @@
-// Variaveis do canvas
-let canva_x = 500;
-let canva_y = 500;
+// Tamanho do canvas
+const canvaX = 500;
+const canvaY = 500;
+
+// Tamanho da area de jogo
+const areaJogoX = canvaX;
+const areaJogoY = canvaY - 75;
+
+// Variaveis do projetil
+var ProjetilX = areaJogoX/2;
+var ProjetilY = areaJogoY - 11;
+var ProjetilD =  20;
+
+// Incremento de movimento do projetil
+var projetilMovimentoX = 6;
+var projetilMovimentoY = 3;
 
 // Qual tela sera inicializada
 var tela = "JOGO";
 
-// Variaveis do projetil
-cirX = 250;
-cirY = 250;
-cirD =  20;
-
-// Variaveis dos componentes do movimento do projetil
-passoX = 6;
-passoY = 3;
-
 function setup(){
-    createCanvas(canva_x, canva_y);
+    createCanvas(canvaX, canvaY);
 }
 
 function draw(){
     if(tela === "INICIAL"){
         background("GREY");
         
-        
-        BotaoJogo     ("JOGO"     ,25,"WHITE",320, 50,160,35,"GREEN");
-        BotaoControles("CONTROLES",25,"WHITE",320,100,160,35,"ORANGE");
-        BotaoCreditos ("CREDITOS" ,25,"WHITE",320,150,160,35,"BLACK");
+        BotaoJogo     ("JOGO"     ,15 ,"WHITE",380, 25,110,30,"GREEN");
+        BotaoControles("CONTROLES",15 ,"WHITE",380, 75,110,30,"ORANGE");
+        BotaoCreditos ("CREDITOS" ,15 ,"WHITE",380,125,110,30,"BLACK");
     }
     
     if(tela === "JOGO") {
         background("GREEN");
+
+        // === SECAO HUD ===
         
-        var areaJogoX = 400;
-        var areaJogoY = 400;
+        // Definicao da tela com informacoes do jogo e area util
+        // Inicialmente pensei em um subespaco quadrado x e y menor que o canvas, mas o x nao sera utilizado
+        // Deixei apenas para maior flexibiidade no design final
+           
         line(        0, areaJogoY, areaJogoX, areaJogoY);
         line(areaJogoX,        0 , areaJogoX, areaJogoY);
+
+        // === SECAO PROJETIL ===
         
         fill("BLUE");
-
-        if((cirX - cirD/2)  > 0 && (cirX + cirD/2) < areaJogoX){
-            cirX += passoX;
+        if((ProjetilX - ProjetilD/2)  > 0 && (ProjetilX + ProjetilD/2) < areaJogoX){
+            ProjetilX += projetilMovimentoX;
         }else{
-            passoX = passoX * -1;
-            cirX += passoX;
+            projetilMovimentoX = projetilMovimentoX * -1;
+            ProjetilX += projetilMovimentoX;
         }
+
+        if((ProjetilY - ProjetilD/2) > 0 && (ProjetilY + ProjetilD/2) < areaJogoY){
+            ProjetilY += projetilMovimentoY;
+        }else{
+            projetilMovimentoY = projetilMovimentoY * -1;
+            ProjetilY += projetilMovimentoY;
+        }
+        circle(ProjetilX,ProjetilY,ProjetilD);
         
-        if((cirY - cirD/2) > 0 && (cirY + cirD/2) < areaJogoY){
-            cirY += passoY;
-        }else{
-            passoY = passoY * -1;
-            cirY += passoY;
-        }
-        //rotateY(10);
-        circle(cirX,cirY,cirD);
-
-        BotaoVoltarIniciar("VOLTAR",25,"WHITE",350,430,110,35,"GREY")
+        BotaoVoltarIniciar("VOLTAR",15,"WHITE",380,450,110,30,"GREY")
     }
-
+    
     if(tela === "CONTROLES") {
         background("ORANGE");
-
+        
         textAlign(CENTER);
         text("CONTROLES",250,50);
         
         textAlign(LEFT);
-        text("As teclas Direita e Esquerda controlam\numa arma e a tecla Espaço dispara\nprojéteis para atingir alvos gerados\naleatoriamente.\n\nA arma estará centralizada na área de\n jogo e rotacionará em seu próprio eixo\n aos comandos das teclas Esqueda e\n Direita.",20,100);
-
+        text("As teclas Direita e Esquerda controlam\numa arma e a tecla Espaço dispara\nprojéteis para atingir alvos gerados\naleatoriamente.\n\nA arma estará centralizada na área de\njogo e rotacionará em seu próprio eixo\naos comandos das teclas Esqueda e\nDireita.",20,100);
+        
         BotaoVoltarIniciar("VOLTAR",25,"WHITE",350,430,110,35,"GREY")
     }
-
+    
     if(tela === "CREDITOS") {
         background("BLACK");
         textAlign(CENTER);
         text("DESENVOLVEDOR",250,50);
         text("Aldglyr Dias (aldglyr@outlook.com)",250,100);
-
+        
         BotaoVoltarIniciar("VOLTAR",25,"WHITE",350,430,110,35,"GREY")
     }
 }
@@ -86,11 +93,11 @@ function BotaoJogo(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor
         tela = "JOGO";
     }
     // Definir se os valores continuarao aqui ou se vao para o inicio das declaracoes
-    cirX = 250;
-    cirY = 250;
-    cirD =  70;
-    passoX = 6;
-    passoY = 3;
+    ProjetilX = 250;
+    ProjetilY = 250;
+    ProjetilD =  70;
+    projetilMovimentoX = 6;
+    projetilMovimentoY = 3;
 }
 
 function BotaoControles(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor){
