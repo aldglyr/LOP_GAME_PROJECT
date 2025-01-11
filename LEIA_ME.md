@@ -23,32 +23,40 @@ Exemplo: Ao invés de somente perguntar "Qual o estado que mais produz sal no Br
 
 # CRITÉRIOS DE AVALIAÇÃO DO JOGO 
 
+0,25
+1,00
+0,50
+0,50
+0,50
+- - - 
+2,75
+
 1. Comum e obrigatório [1,5 pontos + 1,0 ponto extra]: 
-- [0,25 ponto] Estruturas condicionais;
+> [0,25 ponto] Estruturas condicionais;
 - [0,25 ponto] Estrutura de repetição;
 - [1,00 ponto] Vetores; 
-- [1,00 ponto extra] Funções (suas definições). 
+> [1,00 ponto extra] Funções (suas definições). 
 
 2. Menu do jogo [1,5 ponto]: 
-- [0,5 ponto] Iniciar; 
-- [0,5 ponto] Controles; 
-- [0,5 ponto] Créditos. 
+> [0,50 ponto] Iniciar; 
+> [0,50 ponto] Controles; 
+> [0,50 ponto] Créditos. 
 
 3. Mecânica do jogo [3,0 pontos]: 
-- [1,5 ponto] Detecção de colisões entre objetos Identificação de opções corretas/incorretas ;
-- [1,5 ponto] Pelo menos 03 fases / 10 perguntas. 
+- [1,50 ponto] Detecção de colisões entre objetos Identificação de opções corretas/incorretas ;
+- [1,50 ponto] Pelo menos 03 fases / 10 perguntas. 
 
 4. Jogabilidade [2,0 pontos]: 
-- [0,5 ponto] Movimento do personagem (teclado ou mouse);
-- [0,5 ponto] Interface funcional; 
-- [0,5 ponto] Transição de telas/Fases;
-- [0,5 ponto] Pontuação /Medidor de sucesso (vida) / Limite de tempo;
+- [0,50 ponto] Movimento do personagem (teclado ou mouse);
+- [0,50 ponto] Interface funcional; 
+- [0,50 ponto] Transição de telas/Fases;
+- [0,50 ponto] Pontuação /Medidor de sucesso (vida) / Limite de tempo;
 
 5. Elementos visuais e sonoros do jogo [2,0 pontos]: 
-- [1,0 ponto] Utilize sons;
-- [1,0 ponto] Utilize Imagens.
+- [1,00 ponto] Utilize sons;
+- [1,00 ponto] Utilize Imagens.
 
 6. Extras: 
-- [0,5 ponto] Níveis de dificuldade;
-- [0,5 ponto] 3+ inimigos diferentes;
-- [0,5 ponto] Pausar.
+- [0,50 ponto] Níveis de dificuldade;
+- [0,50 ponto] 3+ inimigos diferentes;
+- [0,50 ponto] Pausar.
