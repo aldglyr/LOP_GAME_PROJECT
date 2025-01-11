@@ -1,9 +1,21 @@
+// Variaveis do canvas
 let canva_x = 500;
 let canva_y = 500;
-var tela = "INICIAL";
+
+// Qual tela sera inicializada
+var tela = "JOGO";
+
+// Variaveis do projetil
+cirX = 250;
+cirY = 250;
+cirD =  20;
+
+// Variaveis dos componentes do movimento do projetil
+passoX = 6;
+passoY = 3;
 
 function setup(){
-    createCanvas(canva_x, canva_y,);
+    createCanvas(canva_x, canva_y);
 }
 
 function draw(){
@@ -39,7 +51,7 @@ function draw(){
             passoY = passoY * -1;
             cirY += passoY;
         }
-
+        //rotateY(10);
         circle(cirX,cirY,cirD);
 
         BotaoVoltarIniciar("VOLTAR",25,"WHITE",350,430,110,35,"GREY")
@@ -73,6 +85,7 @@ function BotaoJogo(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor
     if(BotaoClicado(retX, retY, retC, retA)){
         tela = "JOGO";
     }
+    // Definir se os valores continuarao aqui ou se vao para o inicio das declaracoes
     cirX = 250;
     cirY = 250;
     cirD =  70;
