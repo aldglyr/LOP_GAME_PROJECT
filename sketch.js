@@ -8,12 +8,15 @@ const areaJogoY = canvaY - 75;
 
 // Variaveis do projetil
 var ProjetilX = areaJogoX/2;
-var ProjetilY = areaJogoY - 11;
-var ProjetilD =  20;
+var ProjetilY = areaJogoY - 5;
+var ProjetilD =  15;
 
 // Incremento de movimento do projetil
-var projetilMovimentoX = 6;
-var projetilMovimentoY = 3;
+const movimentoInicialX = 6;
+const movimentoInicialY = 3;
+
+var projetilMovimentoX = movimentoInicialX;
+var projetilMovimentoY = movimentoInicialY;
 
 // Qual tela sera inicializada
 var tela = "JOGO";
@@ -34,7 +37,7 @@ function draw(){
     if(tela === "JOGO") {
         background("GREEN");
 
-        // === SECAO HUD ===
+        // === HUD ===
         
         // Definicao da tela com informacoes do jogo e area util
         // Inicialmente pensei em um subespaco quadrado x e y menor que o canvas, mas o x nao sera utilizado
@@ -43,7 +46,9 @@ function draw(){
         line(        0, areaJogoY, areaJogoX, areaJogoY);
         line(areaJogoX,        0 , areaJogoX, areaJogoY);
 
-        // === SECAO PROJETIL ===
+        // === ARMA ===
+
+        // === PROJETIL ===
         
         fill("BLUE");
         if((ProjetilX - ProjetilD/2)  > 0 && (ProjetilX + ProjetilD/2) < areaJogoX){
@@ -52,13 +57,21 @@ function draw(){
             projetilMovimentoX = projetilMovimentoX * -1;
             ProjetilX += projetilMovimentoX;
         }
-
-        if((ProjetilY - ProjetilD/2) > 0 && (ProjetilY + ProjetilD/2) < areaJogoY){
+        
+        if((ProjetilY - ProjetilD/2) >= 0 && (ProjetilY + ProjetilD/2) <= areaJogoY){
             ProjetilY += projetilMovimentoY;
         }else{
             projetilMovimentoY = projetilMovimentoY * -1;
             ProjetilY += projetilMovimentoY;
         }
+        
+        if(ProjetilY === ProjetilD){
+            projetilMovimentoX = 0;
+            projetilMovimentoY = 0;            
+        }
+
+
+        console.log("x: " + ProjetilX + " ,y: " + ProjetilY);
         circle(ProjetilX,ProjetilY,ProjetilD);
         
         BotaoVoltarIniciar("VOLTAR",15,"WHITE",380,450,110,30,"GREY")
@@ -92,12 +105,10 @@ function BotaoJogo(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor
     if(BotaoClicado(retX, retY, retC, retA)){
         tela = "JOGO";
     }
-    // Definir se os valores continuarao aqui ou se vao para o inicio das declaracoes
-    ProjetilX = 250;
-    ProjetilY = 250;
-    ProjetilD =  70;
-    projetilMovimentoX = 6;
-    projetilMovimentoY = 3;
+    projetilMovimentoX = movimentoInicialX;
+    projetilMovimentoY = movimentoInicialY;
+    ProjetilX = areaJogoX/2;
+    ProjetilY = areaJogoY - 5;
 }
 
 function BotaoControles(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor){
