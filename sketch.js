@@ -6,10 +6,20 @@ const canvaY = 500;
 const areaJogoX = canvaX;
 const areaJogoY = canvaY - 75;
 
+// Variaveis do jogo
+var tentativas = 3;
+var jogada =0;
+var pontos = 0;
+
 // Variaveis do projetil
 var ProjetilX = areaJogoX/2;
 var ProjetilY = areaJogoY - 5;
-var ProjetilD =  15;
+var ProjetilD = 15;
+
+// Variaveis do alvo
+var alvoX = areaJogoX/2;
+var alvoY = 100;
+var alvoD = 40;
 
 // Incremento de movimento do projetil
 const movimentoInicialX = 6;
@@ -46,33 +56,44 @@ function draw(){
         line(        0, areaJogoY, areaJogoX, areaJogoY);
         line(areaJogoX,        0 , areaJogoX, areaJogoY);
 
-        // === ARMA ===
+        // === JOGO ===
 
-        // === PROJETIL ===
-        
-        fill("BLUE");
-        if((ProjetilX - ProjetilD/2)  > 0 && (ProjetilX + ProjetilD/2) < areaJogoX){
-            ProjetilX += projetilMovimentoX;
-        }else{
-            projetilMovimentoX = projetilMovimentoX * -1;
-            ProjetilX += projetilMovimentoX;
-        }
-        
-        if((ProjetilY - ProjetilD/2) >= 0 && (ProjetilY + ProjetilD/2) <= areaJogoY){
-            ProjetilY += projetilMovimentoY;
-        }else{
-            projetilMovimentoY = projetilMovimentoY * -1;
-            ProjetilY += projetilMovimentoY;
-        }
-        
-        if(ProjetilY === ProjetilD){
-            projetilMovimentoX = 0;
-            projetilMovimentoY = 0;            
+        while(jogada <= tentativas){
+            // === ARMA ===
+
+            // === ALVO ===
+
+            fill("RED");
+            circle(alvoX,alvoY,alvoD);
+    
+            // === PROJETIL ===
+
+            fill("BLUE");
+            circle(ProjetilX,ProjetilY,ProjetilD);
+
+            if((ProjetilX - ProjetilD/2)  > 0 && (ProjetilX + ProjetilD/2) < areaJogoX){
+                ProjetilX += projetilMovimentoX;
+            }else{
+                projetilMovimentoX = projetilMovimentoX * -1;
+                ProjetilX += projetilMovimentoX;
+            }
+            
+            if((ProjetilY - ProjetilD/2) >= 0 && (ProjetilY + ProjetilD/2) <= areaJogoY){
+                ProjetilY += projetilMovimentoY;
+            }else{
+                projetilMovimentoY = projetilMovimentoY * -1;
+                ProjetilY += projetilMovimentoY;
+            }
+            
+            if(ProjetilY === ProjetilD){
+                projetilMovimentoX = 0;
+                projetilMovimentoY = 0;            
+            }
+    
+            jogada++;
         }
 
-
-        console.log("x: " + ProjetilX + " ,y: " + ProjetilY);
-        circle(ProjetilX,ProjetilY,ProjetilD);
+        BotaoTentar("TENTAR NOVAMENTE",15,"WHITE",areaJogoX/2 - 90,areaJogoY/2,180,30,"GREY")
         
         BotaoVoltarIniciar("VOLTAR",15,"WHITE",380,450,110,30,"GREY")
     }
@@ -100,6 +121,21 @@ function draw(){
 }
 
 //BOTOES
+function BotaoTentar(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor){
+    Botao(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor);
+    if(BotaoClicado(retX, retY, retC, retA)){
+        tela = "JOGO";
+    }
+    projetilMovimentoX = movimentoInicialX;
+    projetilMovimentoY = movimentoInicialY;
+    ProjetilX = areaJogoX/2;
+    ProjetilY = areaJogoY - 5;
+    tentativas = 3;
+    jogada =0;
+    pontos = 0;
+    
+}
+
 function BotaoJogo(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor){
     Botao(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor);
     if(BotaoClicado(retX, retY, retC, retA)){
@@ -109,6 +145,9 @@ function BotaoJogo(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor
     projetilMovimentoY = movimentoInicialY;
     ProjetilX = areaJogoX/2;
     ProjetilY = areaJogoY - 5;
+    tentativas = 3;
+    jogada =0;
+    pontos = 0;
 }
 
 function BotaoControles(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor){
