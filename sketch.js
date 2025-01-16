@@ -8,25 +8,21 @@ const areaJogoY = canvaY - 75;
 
 // Variaveis do jogo
 var tentativas = 3;
-var jogada =0;
+var jogada = 0;
 var pontos = 0;
 
 // Variaveis do projetil
-var ProjetilX = areaJogoX/2;
-var ProjetilY = areaJogoY - 5;
 var ProjetilD = 15;
+var ProjetilPosX = areaJogoX/2;
+var ProjetilPosY = areaJogoY - ProjetilD/2;
+var projetilMovimentoX = 6;
+var projetilMovimentoY = -3;
 
 // Variaveis do alvo
 var alvoX = areaJogoX/2;
 var alvoY = 100;
 var alvoD = 40;
 
-// Incremento de movimento do projetil
-const movimentoInicialX = 6;
-const movimentoInicialY = 3;
-
-var projetilMovimentoX = movimentoInicialX;
-var projetilMovimentoY = movimentoInicialY;
 
 // Qual tela sera inicializada
 var tela = "JOGO";
@@ -57,47 +53,38 @@ function draw(){
         line(areaJogoX,        0 , areaJogoX, areaJogoY);
 
         // === JOGO ===
-
+        
+        // === PROJETIL ===
+        fill("BLUE");
+        circle(ProjetilPosX,ProjetilPosY,ProjetilD);
+        
         // === ARMA ===
         
         // === ALVO ===
         fill("RED");
         circle(alvoX,alvoY,alvoD);
         
-        // === PROJETIL ===
-        
-        fill("BLUE");
-        circle(ProjetilX,ProjetilY,ProjetilD);
-        Projetil();
-
         // === CONDICAO DE DISPARO ===
         if(keyCode === 32){
             // === DISPARO ===
-            if((ProjetilX - ProjetilD/2)  > 0 && (ProjetilX + ProjetilD/2) < areaJogoX){
-                ProjetilX += projetilMovimentoX;
+
+            if((ProjetilPosX - ProjetilD/2) > 0 && (ProjetilPosX + ProjetilD/2) < areaJogoX){
+                ProjetilPosX += projetilMovimentoX;
             }else{
                 projetilMovimentoX = projetilMovimentoX * -1;
-                ProjetilX += projetilMovimentoX;
+                ProjetilPosX += projetilMovimentoX;
             }
             
-            if((ProjetilY - ProjetilD/2) >= 0 && (ProjetilY + ProjetilD/2) <= areaJogoY){
-                ProjetilY += projetilMovimentoY;
+            if((ProjetilPosY - ProjetilD/2) > 0 && (ProjetilPosY + ProjetilD/2) <= areaJogoY){
+                ProjetilPosY += projetilMovimentoY;
             }else{
-                projetilMovimentoY = projetilMovimentoY * -1;
-                ProjetilY += projetilMovimentoY;
-            }
-            
-            // === CONDICAO PARA DESTUICAO DO PROJETIL E RESET DO JOGO
-            if(ProjetilY === ProjetilD){
+                // === CONDICAO PARA DESTUICAO DO PROJETIL E RESET DO JOGO
                 projetilMovimentoX = 0;
                 projetilMovimentoY = 0;            
                 keyCode = 3;
                 BotaoTentar("TENTAR NOVAMENTE",15,"WHITE",areaJogoX/2 - 90,areaJogoY/2,180,30,"GREY")
             }
         }
-               
-        
-        
         BotaoVoltarIniciar("VOLTAR",15,"WHITE",380,450,110,30,"GREY")
     }
     
@@ -123,22 +110,18 @@ function draw(){
     }
 }
 
-function Projetil(){
-}
-
-//BOTOES
+// === BOTOES ===
 function BotaoTentar(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor){
-    Botao(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor);
+Botao(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor);
     if(BotaoClicado(retX, retY, retC, retA)){
         tela = "JOGO";
     }
-    projetilMovimentoX = movimentoInicialX;
-    projetilMovimentoY = movimentoInicialY;
-    ProjetilX = areaJogoX/2;
-    ProjetilY = areaJogoY - 5;
+    projetilMovimentoX = 0;
+    projetilMovimentoY = 0;
     tentativas = 3;
     jogada =0;
     pontos = 0;
+    keyCode = 3;
     
 }
 
@@ -147,13 +130,14 @@ function BotaoJogo(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor
     if(BotaoClicado(retX, retY, retC, retA)){
         tela = "JOGO";
     }
-    projetilMovimentoX = movimentoInicialX;
-    projetilMovimentoY = movimentoInicialY;
-    ProjetilX = areaJogoX/2;
-    ProjetilY = areaJogoY - 5;
+    projetilMovimentoX = 0;
+    projetilMovimentoY = 0;
+    ProjetilPosX = areaJogoX/2;
+    ProjetilPosY = areaJogoY - ProjetilD/2;
     tentativas = 3;
     jogada =0;
     pontos = 0;
+    keyCode = 3;
 }
 
 function BotaoControles(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor){
@@ -177,7 +161,7 @@ function BotaoVoltarIniciar(texto, textoTamanho, textoCor, retX, retY, retC, ret
     }
 }
 
-//FUNCOES AUXILIARES
+// === FUNCOES AUXILIARES ===
 function Botao(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor){
     textSize(textoTamanho);
 
