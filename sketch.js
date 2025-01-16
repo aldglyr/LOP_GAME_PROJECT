@@ -58,19 +58,21 @@ function draw(){
 
         // === JOGO ===
 
-        while(jogada <= tentativas){
-            // === ARMA ===
+        // === ARMA ===
+        
+        // === ALVO ===
+        fill("RED");
+        circle(alvoX,alvoY,alvoD);
+        
+        // === PROJETIL ===
+        
+        fill("BLUE");
+        circle(ProjetilX,ProjetilY,ProjetilD);
+        Projetil();
 
-            // === ALVO ===
-
-            fill("RED");
-            circle(alvoX,alvoY,alvoD);
-    
-            // === PROJETIL ===
-
-            fill("BLUE");
-            circle(ProjetilX,ProjetilY,ProjetilD);
-
+        // === CONDICAO DE DISPARO ===
+        if(keyCode === 32){
+            // === DISPARO ===
             if((ProjetilX - ProjetilD/2)  > 0 && (ProjetilX + ProjetilD/2) < areaJogoX){
                 ProjetilX += projetilMovimentoX;
             }else{
@@ -85,15 +87,16 @@ function draw(){
                 ProjetilY += projetilMovimentoY;
             }
             
+            // === CONDICAO PARA DESTUICAO DO PROJETIL E RESET DO JOGO
             if(ProjetilY === ProjetilD){
                 projetilMovimentoX = 0;
                 projetilMovimentoY = 0;            
+                keyCode = 3;
+                BotaoTentar("TENTAR NOVAMENTE",15,"WHITE",areaJogoX/2 - 90,areaJogoY/2,180,30,"GREY")
             }
-    
-            jogada++;
         }
-
-        BotaoTentar("TENTAR NOVAMENTE",15,"WHITE",areaJogoX/2 - 90,areaJogoY/2,180,30,"GREY")
+               
+        
         
         BotaoVoltarIniciar("VOLTAR",15,"WHITE",380,450,110,30,"GREY")
     }
@@ -118,6 +121,9 @@ function draw(){
         
         BotaoVoltarIniciar("VOLTAR",25,"WHITE",350,430,110,35,"GREY")
     }
+}
+
+function Projetil(){
 }
 
 //BOTOES
