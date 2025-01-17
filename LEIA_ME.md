@@ -60,3 +60,55 @@ Exemplo: Ao invés de somente perguntar "Qual o estado que mais produz sal no Br
 - [0,50 ponto] Níveis de dificuldade;
 - [0,50 ponto] 3+ inimigos diferentes;
 - [0,50 ponto] Pausar.
+
+=== ESTRUTURA
+
+tentativas
+placar
+fases
+
+=== tela inicio
+clicar botao [JOGO]      > tela |fase 1|
+clicar botao [controles] > tela |controles|
+clicar botao [CREDITOS]  > tela |creditos|
+
+=== tela fase 1
+se tentativa = 0
+    > {aviso que perdeu} | {mostrar pontos}
+    > tela [INICIO]
+
+se errar alvo
+    tentativa = -1
+    > tela |fase 1|
+se acertar bloco
+    tentativa = -1
+    > tela |fase 1|
+se o tempo passar
+    tentativa = -1
+    > tela |fase 1|
+se acertar alvo
+    placar = +1
+    > tela |fase 2|
+
+
+
+
+
+
+
+
+
+
+
+
+=== TELAS
+
+INICIO
+
+TELA_1
+TELA_2
+TELA_3
+
+CONTROLES
+CREDITOS
+

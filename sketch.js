@@ -12,80 +12,100 @@ var jogada = 0;
 var pontos = 0;
 
 // Variaveis do projetil
-var ProjetilD = 15;
-var ProjetilPosX = areaJogoX/2;
-var ProjetilPosY = areaJogoY - ProjetilD/2;
-var projetilMovimentoX = 6;
-var projetilMovimentoY = -3;
+var tiroD = 15;
+var tiroPosX = areaJogoX/2;
+var tiroPosY = areaJogoY - tiroD/2;
+var tiroMovX = 6;
+var tiroMovY = -3;
 
 // Variaveis do alvo
-var alvoX = areaJogoX/2;
-var alvoY = 100;
 var alvoD = 40;
+var alvoPosX = areaJogoX/2;
+var alvoPosY = 50;
+var alvoMovX = 0;
+var alvoMovY = 0;
 
+// Variaveis do bloco
+var blocoPosX = 0;
+var blocoPosY = 0;
+var blocoComW = 0;
+var blocoAltH = 0;
+var blocoMovX = 0;
+var blocoMovY = 0;
 
-// Qual tela sera inicializada
-var tela = "JOGO";
+// Variaveis de inicializacao
+var tela = "INICIO";
+var telaSet = true;
 
 function setup(){
     createCanvas(canvaX, canvaY);
 }
 
 function draw(){
-    if(tela === "INICIAL"){
+    if(tela === "INICIO"){
         background("GREY");
-        
         BotaoJogo     ("JOGO"     ,15 ,"WHITE",380, 25,110,30,"GREEN");
         BotaoControles("CONTROLES",15 ,"WHITE",380, 75,110,30,"ORANGE");
         BotaoCreditos ("CREDITOS" ,15 ,"WHITE",380,125,110,30,"BLACK");
     }
     
-    if(tela === "JOGO") {
-        background("GREEN");
-
-        // === HUD ===
-        
-        // Definicao da tela com informacoes do jogo e area util
-        // Inicialmente pensei em um subespaco quadrado x e y menor que o canvas, mas o x nao sera utilizado
-        // Deixei apenas para maior flexibiidade no design final
-           
-        line(        0, areaJogoY, areaJogoX, areaJogoY);
-        line(areaJogoX,        0 , areaJogoX, areaJogoY);
-
-        // === JOGO ===
-        
-        // === PROJETIL ===
-        fill("BLUE");
-        circle(ProjetilPosX,ProjetilPosY,ProjetilD);
-        
-        // === ARMA ===
-        
-        // === ALVO ===
-        fill("RED");
-        circle(alvoX,alvoY,alvoD);
-        
-        // === CONDICAO DE DISPARO ===
-        if(keyCode === 32){
-            // === DISPARO ===
-
-            if((ProjetilPosX - ProjetilD/2) > 0 && (ProjetilPosX + ProjetilD/2) < areaJogoX){
-                ProjetilPosX += projetilMovimentoX;
-            }else{
-                projetilMovimentoX = projetilMovimentoX * -1;
-                ProjetilPosX += projetilMovimentoX;
+    if(tela === "TELA_1") {
+        if(tentativas > 0){
+            background("GREEN");
+            if(telaSet){
+                ConfigTela("TELA_1");
             }
-            
-            if((ProjetilPosY - ProjetilD/2) > 0 && (ProjetilPosY + ProjetilD/2) <= areaJogoY){
-                ProjetilPosY += projetilMovimentoY;
-            }else{
-                // === CONDICAO PARA DESTUICAO DO PROJETIL E RESET DO JOGO
-                projetilMovimentoX = 0;
-                projetilMovimentoY = 0;            
-                keyCode = 3;
-                BotaoTentar("TENTAR NOVAMENTE",15,"WHITE",areaJogoX/2 - 90,areaJogoY/2,180,30,"GREY")
+
+            // === HUD ===
+
+            // Definicao da tela com informacoes do jogo e area util
+            // Inicialmente pensei em um subespaco quadrado x e y menor que o canvas, mas o x nao sera utilizado
+            // Deixei apenas para maior flexibiidade no design final
+
+            line(        0, areaJogoY, areaJogoX, areaJogoY);
+            line(areaJogoX,        0 , areaJogoX, areaJogoY);
+
+            // === JOGO ===
+
+            // === PROJETIL ===
+            fill("BLUE");
+            circle(tiroPosX,tiroPosY,tiroD);
+
+            // === ARMA ===
+
+            // === ALVO ===
+            fill("RED");
+            circle(alvoPosX,alvoPosY,alvoD);
+
+            // === CONDICAO DE DISPARO ===
+            if(keyCode === 32){
+                // === DISPARO ===
+
+                if((tiroPosX - tiroD/2) > 0 && (tiroPosX + tiroD/2) < areaJogoX){
+                    tiroPosX += tiroMovX;
+                }else{
+                    tiroMovX = tiroMovX * -1;
+                    tiroPosX += tiroMovX;
+                }
+
+                if((tiroPosY - tiroD/2) > 0 && (tiroPosY + tiroD/2) <= areaJogoY){
+                    tiroPosY += tiroMovY;
+                }else{
+                    // === CONDICAO PARA DESTUICAO DO PROJETIL E RESET DO JOGO ===
+                    tiroMovX = 0;
+                    tiroMovY = 0;            
+                    keyCode = 3;
+                    console.log("x: " + tiroPosX + ", y: " + tiroPosY);
+                    console.log("botao tentar");
+                    noLoop();
+                }
             }
+        }else{
+            /* mostrar que perdeu
+               mostrar pontuacao
+               voltar pra tela inicial
+            */
         }
-        BotaoVoltarIniciar("VOLTAR",15,"WHITE",380,450,110,30,"GREY")
     }
     
     if(tela === "CONTROLES") {
@@ -97,7 +117,7 @@ function draw(){
         textAlign(LEFT);
         text("As teclas Direita e Esquerda controlam\numa arma e a tecla Espaço dispara\nprojéteis para atingir alvos gerados\naleatoriamente.\n\nA arma estará centralizada na área de\njogo e rotacionará em seu próprio eixo\naos comandos das teclas Esqueda e\nDireita.",20,100);
         
-        BotaoVoltarIniciar("VOLTAR",25,"WHITE",350,430,110,35,"GREY")
+        BotaoVoltarIniciar("VOLTAR",15,"WHITE",380,450,110,30,"GREY")
     }
     
     if(tela === "CREDITOS") {
@@ -106,74 +126,84 @@ function draw(){
         text("DESENVOLVEDOR",250,50);
         text("Aldglyr Dias (aldglyr@outlook.com)",250,100);
         
-        BotaoVoltarIniciar("VOLTAR",25,"WHITE",350,430,110,35,"GREY")
+        BotaoVoltarIniciar("VOLTAR",15,"WHITE",380,450,110,30,"GREY")
+    }
+}
+
+// === FUNCOES DO JOGO ===
+function ConfigTela(tela) {
+    if(tela = "TELA_1"){
+        // Variaveis do projetil
+        tiroD = 15;
+        tiroPosX = areaJogoX/2;
+        tiroPosY = areaJogoY - tiroD/2;
+        tiroMovX = 6;
+        tiroMovY = -3;
+        
+        // Variaveis do alvo
+        alvoD = 40;
+        alvoPosX = areaJogoX/2;
+        alvoPosY = 50;
+        alvoMovX = 0;
+        alvoMovY = 0;
+        
+        // Variaveis do bloco
+        blocoPosX = 0;
+        blocoPosY = 0;
+        blocoComW = 0;
+        blocoAltH = 0;
+        blocoMovX = 0;
+        blocoMovY = 0;
+        
+        telaSet = false;
+        
+    }
+    if(tela = "TELA_2"){
+
+    }
+    if(tela = "TELA_3"){
+
     }
 }
 
 // === BOTOES ===
-function BotaoTentar(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor){
-Botao(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor);
-    if(BotaoClicado(retX, retY, retC, retA)){
-        tela = "JOGO";
-    }
-    projetilMovimentoX = 0;
-    projetilMovimentoY = 0;
-    tentativas = 3;
-    jogada =0;
-    pontos = 0;
-    keyCode = 3;
-    
-}
-
 function BotaoJogo(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor){
-    Botao(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor);
-    if(BotaoClicado(retX, retY, retC, retA)){
-        tela = "JOGO";
+    if(Botao(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor)){
+        tela = "TELA_1";
     }
-    projetilMovimentoX = 0;
-    projetilMovimentoY = 0;
-    ProjetilPosX = areaJogoX/2;
-    ProjetilPosY = areaJogoY - ProjetilD/2;
-    tentativas = 3;
-    jogada =0;
-    pontos = 0;
-    keyCode = 3;
+    telaSet = true;
 }
 
 function BotaoControles(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor){
-    Botao(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor);
-    if(BotaoClicado(retX, retY, retC, retA)){
+    if(Botao(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor)){
         tela = "CONTROLES";
     }
 }
 
 function BotaoCreditos(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor){
-    Botao(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor);
-    if(BotaoClicado(retX, retY, retC, retA)){
+    if(Botao(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor)){
         tela = "CREDITOS";
     }
 }
 
 function BotaoVoltarIniciar(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor){
-    Botao(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor);
-    if(BotaoClicado(retX, retY, retC, retA)){
-        tela = "INICIAL";
+    if(Botao(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor)){
+        tela = "INICIO";
     }
 }
 
 // === FUNCOES AUXILIARES ===
 function Botao(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor){
-    textSize(textoTamanho);
 
+    // === CONSTRUCAO DO BOTAO ===
+    textSize(textoTamanho);
     fill(retCor);
     rect(retX, retY, retC, retA);
-
     fill(textoCor);
     textAlign(CENTER);
     text(texto, retX + retC / 2, retY + retA - 10);
-}
 
-function BotaoClicado(retX, retY, retC, retA){
+    // === VERIFICA SE O BOTAO FOI CLICADO E RETORNA VERDADEIRO OU FALSO ===
     if(mouseX > retX &&
        mouseX < retX + retC &&
        mouseY > retY &&
