@@ -66,45 +66,14 @@ function draw(){
             if(telaSet){
                 ConfigTela("TELA_1");
             }
-            hud();
+            
+            Hud();
+            Arma();
+            Projetil();
 
-            arma();
-
-            // === JOGO ===
-
-            // === PROJETIL ===
-            fill("BLUE");
-            circle(tiroPosX,tiroPosY,tiroD);
-
-            // === ARMA ===
-
-            // === ALVO ===
             fill("RED");
             circle(alvoPosX,alvoPosY,alvoD);
 
-            // === CONDICAO DE DISPARO ===
-            if(keyCode === 32){
-                // === DISPARO ===
-
-                if((tiroPosX - tiroD/2) > 0 && (tiroPosX + tiroD/2) < areaJogoX){
-                    tiroPosX += tiroMovX;
-                }else{
-                    tiroMovX = tiroMovX * -1;
-                    tiroPosX += tiroMovX;
-                }
-
-                if((tiroPosY - tiroD/2) > 0 && (tiroPosY + tiroD/2) <= areaJogoY){
-                    tiroPosY += tiroMovY;
-                }else{
-                    // === CONDICAO PARA DESTUICAO DO PROJETIL E RESET DO JOGO ===
-                    tiroMovX = 0;
-                    tiroMovY = 0;            
-                    keyCode = 3;
-                    console.log("x: " + tiroPosX + ", y: " + tiroPosY);
-                    console.log("botao tentar");
-                    noLoop();
-                }
-            }
         }else{
             /* mostrar que perdeu
                mostrar pontuacao
@@ -137,8 +106,36 @@ function draw(){
 
 // === FUNCOES DO JOGO ===
 
+function Projetil(){
+    fill("BLUE");
+    circle(tiroPosX,tiroPosY,tiroD);
+    
+    // === CONDICAO DE DISPARO ===
+    if(keyCode === 32){
+        // === DISPARO ==
+        if((tiroPosX - tiroD/2) > 0 && (tiroPosX + tiroD/2) < areaJogoX){
+            tiroPosX += tiroMovX;
+        }else{
+            tiroMovX = tiroMovX * -1;
+            tiroPosX += tiroMovX;
+        }
+        
+        if((tiroPosY - tiroD/2) > 0 && (tiroPosY + tiroD/2) <= areaJogoY){
+            tiroPosY += tiroMovY;
+        }else{
+            // === CONDICAO PARA DESTUICAO DO PROJETIL E RESET DO JOGO ===
+            tiroMovX = 0;
+            tiroMovY = 0;            
+            keyCode = 3;
+            console.log("x: " + tiroPosX + ", y: " + tiroPosY);
+            console.log("botao tentar");
+            noLoop();
+        }
+    }
 
-function hud(){
+}
+
+function Hud(){
     // Definicao da tela com informacoes do jogo e area util
     // Inicialmente pensei em um subespaco quadrado x e y menor que o canvas, mas o x nao sera utilizado
     // Deixei apenas para maior flexibiidade no design final
@@ -146,7 +143,7 @@ function hud(){
     line(areaJogoX,        0 , areaJogoX, areaJogoY);
 }
 
-function arma(){
+function Arma(){
     beginShape(TRIANGLES);
 
     vertex(verEsqX,verEsqY);
