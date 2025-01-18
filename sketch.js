@@ -66,18 +66,9 @@ function draw(){
             if(telaSet){
                 ConfigTela("TELA_1");
             }
-
+            hud();
 
             arma();
-
-            // === HUD ===
-
-            // Definicao da tela com informacoes do jogo e area util
-            // Inicialmente pensei em um subespaco quadrado x e y menor que o canvas, mas o x nao sera utilizado
-            // Deixei apenas para maior flexibiidade no design final
-
-            line(        0, areaJogoY, areaJogoX, areaJogoY);
-            line(areaJogoX,        0 , areaJogoX, areaJogoY);
 
             // === JOGO ===
 
@@ -145,6 +136,16 @@ function draw(){
 }
 
 // === FUNCOES DO JOGO ===
+
+
+function hud(){
+    // Definicao da tela com informacoes do jogo e area util
+    // Inicialmente pensei em um subespaco quadrado x e y menor que o canvas, mas o x nao sera utilizado
+    // Deixei apenas para maior flexibiidade no design final
+    line(        0, areaJogoY, areaJogoX, areaJogoY);
+    line(areaJogoX,        0 , areaJogoX, areaJogoY);
+}
+
 function arma(){
     beginShape(TRIANGLES);
 
