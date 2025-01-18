@@ -33,8 +33,18 @@ var blocoAltH = 0;
 var blocoMovX = 0;
 var blocoMovY = 0;
 
+// Variaveis da arma
+var verEsqX = areaJogoX/2 - 10;
+var verEsqY = areaJogoY;
+
+var verCenX = areaJogoX/2 - 15;
+var verCenY = areaJogoY - 30;
+
+var verDirX = areaJogoX/2+10;
+var verDirY = areaJogoY;
+
 // Variaveis de inicializacao
-var tela = "INICIO";
+var tela = "TELA_1";
 var telaSet = true;
 
 function setup(){
@@ -52,9 +62,13 @@ function draw(){
     if(tela === "TELA_1") {
         if(tentativas > 0){
             background("GREEN");
+            
             if(telaSet){
                 ConfigTela("TELA_1");
             }
+
+
+            arma();
 
             // === HUD ===
 
@@ -131,6 +145,16 @@ function draw(){
 }
 
 // === FUNCOES DO JOGO ===
+function arma(){
+    beginShape(TRIANGLES);
+
+    vertex(verEsqX,verEsqY);
+    vertex(verCenX,verCenY);
+    vertex(verDirX,verDirY);
+
+    endShape();
+}
+
 function ConfigTela(tela) {
     if(tela = "TELA_1"){
         // Variaveis do projetil
@@ -156,13 +180,56 @@ function ConfigTela(tela) {
         blocoMovY = 0;
         
         telaSet = false;
-        
     }
     if(tela = "TELA_2"){
-
+        // Variaveis do projetil
+        tiroD = 15;
+        tiroPosX = areaJogoX/2;
+        tiroPosY = areaJogoY - tiroD/2;
+        tiroMovX = 6;
+        tiroMovY = -3;
+        
+        // Variaveis do alvo
+        alvoD = 40;
+        alvoPosX = areaJogoX/2;
+        alvoPosY = 50;
+        alvoMovX = 0;
+        alvoMovY = 0;
+        
+        // Variaveis do bloco
+        blocoPosX = 0;
+        blocoPosY = 0;
+        blocoComW = 0;
+        blocoAltH = 0;
+        blocoMovX = 0;
+        blocoMovY = 0;
+        
+        telaSet = false;
     }
     if(tela = "TELA_3"){
-
+        // Variaveis do projetil
+        tiroD = 15;
+        tiroPosX = areaJogoX/2;
+        tiroPosY = areaJogoY - tiroD/2;
+        tiroMovX = 6;
+        tiroMovY = -3;
+        
+        // Variaveis do alvo
+        alvoD = 40;
+        alvoPosX = areaJogoX/2;
+        alvoPosY = 50;
+        alvoMovX = 0;
+        alvoMovY = 0;
+        
+        // Variaveis do bloco
+        blocoPosX = 0;
+        blocoPosY = 0;
+        blocoComW = 0;
+        blocoAltH = 0;
+        blocoMovX = 0;
+        blocoMovY = 0;
+        
+        telaSet = false;
     }
 }
 
