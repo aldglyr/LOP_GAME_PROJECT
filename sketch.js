@@ -7,7 +7,7 @@ const areaJogoX = canvaX;
 const areaJogoY = canvaY - 75;
 
 // Variaveis do jogo
-var tentativas = 3;
+var tentativas = 1;
 var jogada = 0;
 var pontos = 0;
 
@@ -37,10 +37,10 @@ var blocoMovY = 0;
 var verEsqX = areaJogoX/2 - 10;
 var verEsqY = areaJogoY;
 
-var verCenX = areaJogoX/2 - 15;
+var verCenX = areaJogoX/2;
 var verCenY = areaJogoY - 30;
 
-var verDirX = areaJogoX/2+10;
+var verDirX = areaJogoX/2 + 10;
 var verDirY = areaJogoY;
 
 // Variaveis de inicializacao
@@ -74,11 +74,14 @@ function draw(){
             Alvo();
 
         }else{
+            Caixa("Fim de Jogo!",15,"BLACK",canvaX/2-55,canvaY/2,110,30,"GREY");
+
             /* mostrar que perdeu
                mostrar pontuacao
                voltar pra tela inicial
             */
         }
+        BotaoVoltarIniciar("VOLTAR",15,"WHITE",380,450,110,30,"GREY")
     }
     
     if(tela === "CONTROLES") {
@@ -112,7 +115,7 @@ function Alvo(){
 function Bloco(){
     fill("BLACK");
     rect(blocoPosX,blocoPosY,blocoComW,blocoAltH);
-    //console.log("x: " + tiroPosX + ", y: " + tiroPosY);
+   // console.log("x: " + blocoPosX + ", y: " + blocoPosY);
 }
 
 function Projetil(){
@@ -127,17 +130,17 @@ function Projetil(){
             tiroPosX += tiroMovX;
         }
         
-        if((tiroPosY - tiroD/2) > 0 && (tiroPosY + tiroD/2) <= areaJogoY){
+        if((tiroPosY - tiroD/2) > 0 && (tiroPosY + tiroD/2) < areaJogoY){
             tiroPosY += tiroMovY;
         }else{
             // === CONDICAO PARA DESTUICAO DO PROJETIL E RESET DO JOGO ===
-            tiroMovX = 0;
-            tiroMovY = 0;
-            tiroD = 1;
+            tiroD = 0;
             keyCode = 3;
             console.log("x: " + tiroPosX + ", y: " + tiroPosY);
             console.log("botao tentar");
-            noLoop();
+            telaSet = true;
+            tentativas--;
+//            noLoop();
         }
     }
     
@@ -151,7 +154,6 @@ function Hud(){
     // Deixei apenas para maior flexibiidade no design final
     line(        0, areaJogoY, areaJogoX, areaJogoY);
     line(areaJogoX,        0 , areaJogoX, areaJogoY);
-    BotaoVoltarIniciar("VOLTAR",15,"WHITE",380,450,110,30,"GREY")
     Caixa("PONTOS: "+ pontos,15,"BLACK",20,450,110,30,"GREY")
     Caixa("TENTATIVAS: "+ tentativas,15,"BLACK",160,450,130,30,"GREY")
 }
@@ -168,11 +170,11 @@ function Arma(){
 }
 
 function ConfigTela(tela) {
-    if(tela = "TELA_1"){
+    if(tela === "TELA_1"){
         // Variaveis do projetil
         tiroD = 15;
-        tiroPosX = areaJogoX/2;
-        tiroPosY = areaJogoY - tiroD/2;
+        tiroPosX = verCenX;
+        tiroPosY = verCenY;
         tiroMovX = 6;
         tiroMovY = -3;
         
@@ -195,15 +197,15 @@ function ConfigTela(tela) {
         verEsqX = areaJogoX/2 - 10;
         verEsqY = areaJogoY;
         
-        verCenX = areaJogoX/2 - 15;
+        verCenX = areaJogoX/2;
         verCenY = areaJogoY - 30;
         
-        verDirX = areaJogoX/2+10;
+        verDirX = areaJogoX/2 + 10;
         verDirY = areaJogoY;        
         
         telaSet = false;
     }
-    if(tela = "TELA_2"){
+    if(tela === "TELA_2"){
         // Variaveis do projetil
         tiroD = 15;
         tiroPosX = areaJogoX/2;
@@ -227,8 +229,9 @@ function ConfigTela(tela) {
         blocoMovY = 0;
         
         telaSet = false;
+
     }
-    if(tela = "TELA_3"){
+    if(tela === "TELA_3"){
         // Variaveis do projetil
         tiroD = 15;
         tiroPosX = areaJogoX/2;
@@ -258,7 +261,11 @@ function ConfigTela(tela) {
 // === BOTOES ===
 function BotaoJogo(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor){
     if(Botao(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor)){
+        // Variaveis do jogo
         tela = "TELA_1";
+        tentativas = 1;
+        jogada = 0;
+        pontos = 0;
     }
     telaSet = true;
 }
