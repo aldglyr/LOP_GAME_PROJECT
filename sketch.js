@@ -12,24 +12,24 @@ var jogada = 0;
 var pontos = 0;
 
 // Variaveis do projetil
-var tiroD = 15;
-var tiroPosX = areaJogoX/2;
-var tiroPosY = areaJogoY - tiroD/2;
-var tiroMovX = 6;
-var tiroMovY = -3;
+var tiroD = 0;
+var tiroPosX = 0;
+var tiroPosY = 0;
+var tiroMovX = 0;
+var tiroMovY = 0;
 
 // Variaveis do alvo
-var alvoD = 40;
-var alvoPosX = areaJogoX/2;
-var alvoPosY = 50;
+var alvoD = 0;
+var alvoPosX = 0;
+var alvoPosY = 0;
 var alvoMovX = 0;
 var alvoMovY = 0;
 
 // Variaveis do bloco
-var blocoPosX = 0;
-var blocoPosY = 0;
-var blocoComW = 0;
-var blocoAltH = 0;
+var blocoPosX = 100;
+var blocoPosY = 100;
+var blocoComW = 100;
+var blocoAltH = 100;
 var blocoMovX = 0;
 var blocoMovY = 0;
 
@@ -70,9 +70,8 @@ function draw(){
             Hud();
             Arma();
             Projetil();
-
-            fill("RED");
-            circle(alvoPosX,alvoPosY,alvoD);
+            Bloco();
+            Alvo();
 
         }else{
             /* mostrar que perdeu
@@ -105,10 +104,18 @@ function draw(){
 }
 
 // === FUNCOES DO JOGO ===
+function Alvo(){
+    fill("RED");
+    circle(alvoPosX,alvoPosY,alvoD);
+}
+
+function Bloco(){
+    fill("BLACK");
+    rect(blocoPosX,blocoPosY,blocoComW,blocoAltH);
+    //console.log("x: " + tiroPosX + ", y: " + tiroPosY);
+}
 
 function Projetil(){
-    fill("BLUE");
-    circle(tiroPosX,tiroPosY,tiroD);
     
     // === CONDICAO DE DISPARO ===
     if(keyCode === 32){
@@ -125,14 +132,17 @@ function Projetil(){
         }else{
             // === CONDICAO PARA DESTUICAO DO PROJETIL E RESET DO JOGO ===
             tiroMovX = 0;
-            tiroMovY = 0;            
+            tiroMovY = 0;
+            tiroD = 1;
             keyCode = 3;
             console.log("x: " + tiroPosX + ", y: " + tiroPosY);
             console.log("botao tentar");
             noLoop();
         }
     }
-
+    
+    fill("BLUE");
+    circle(tiroPosX,tiroPosY,tiroD);
 }
 
 function Hud(){
@@ -141,9 +151,13 @@ function Hud(){
     // Deixei apenas para maior flexibiidade no design final
     line(        0, areaJogoY, areaJogoX, areaJogoY);
     line(areaJogoX,        0 , areaJogoX, areaJogoY);
+    BotaoVoltarIniciar("VOLTAR",15,"WHITE",380,450,110,30,"GREY")
+    Caixa("PONTOS: "+ pontos,15,"BLACK",20,450,110,30,"GREY")
+    Caixa("TENTATIVAS: "+ tentativas,15,"BLACK",160,450,130,30,"GREY")
 }
 
 function Arma(){
+    fill("ORANGE");
     beginShape(TRIANGLES);
 
     vertex(verEsqX,verEsqY);
@@ -170,12 +184,22 @@ function ConfigTela(tela) {
         alvoMovY = 0;
         
         // Variaveis do bloco
-        blocoPosX = 0;
-        blocoPosY = 0;
-        blocoComW = 0;
-        blocoAltH = 0;
+        blocoPosX = areaJogoX/2;
+        blocoPosY = 100;
+        blocoComW = 100;
+        blocoAltH = 50;
         blocoMovX = 0;
         blocoMovY = 0;
+        
+        // Variaveis da arma
+        verEsqX = areaJogoX/2 - 10;
+        verEsqY = areaJogoY;
+        
+        verCenX = areaJogoX/2 - 15;
+        verCenY = areaJogoY - 30;
+        
+        verDirX = areaJogoX/2+10;
+        verDirY = areaJogoY;        
         
         telaSet = false;
     }
@@ -279,4 +303,15 @@ function Botao(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor){
     }else{
         return false;
     }
+}
+
+function Caixa(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor){
+
+    // === CONSTRUCAO DO BOTAO ===
+    textSize(textoTamanho);
+    fill(retCor);
+    rect(retX, retY, retC, retA);
+    fill(textoCor);
+    textAlign(CENTER);
+    text(texto, retX + retC / 2, retY + retA - 10);
 }
