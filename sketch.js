@@ -7,7 +7,7 @@ const areaJogoX = canvaX;
 const areaJogoY = canvaY - 60;
 
 // Variaveis do jogo
-var vidas = 1;
+var vidas = 3;
 var jogada = 0;
 var pontos = 0;
 
@@ -17,6 +17,7 @@ var tiroPosX = 0;
 var tiroPosY = 0;
 var tiroMovX = 0;
 var tiroMovY = 0;
+var tiroDisparado = false;
 
 // Variaveis do alvo
 var alvoD = 0;
@@ -34,12 +35,13 @@ var blocoMovX = 0;
 var blocoMovY = 0;
 
 // Variaveis da arma
-var verEsqX = 0; //areaJogoX/2 - 10;
-var verEsqY = 0; //areaJogoY;
-var verCenX = 0; //areaJogoX/2;
-var verCenY = 0; //areaJogoY - 30;
-var verDirX = 0; //areaJogoX/2 + 10;
-var verDirY = 0; //areaJogoY;
+var armaEsqX = 0;
+var armaEsqY = 0;
+var armaCenX = 0;
+var armaCenY = 0;
+var armaDirX = 0;
+var armaDirY = 0;
+var armaAngulo = 0
 
 // Variaveis de inicializacao
 var tela = "FASE 1";
@@ -47,6 +49,7 @@ var telaSet = true;
 
 function setup(){
     createCanvas(canvaX, canvaY);
+    angleMode(DEGREES);
 }
 
 function draw(){
@@ -66,8 +69,8 @@ function draw(){
             }
             
             Hud();
-            Arma();
             Projetil();
+            Arma();
             Bloco();
             Alvo();
 
@@ -119,7 +122,7 @@ function Bloco(){
 function Projetil(){
     
     // === CONDICAO DE DISPARO ===
-    if(keyCode === 32){
+    if(tiroDisparado === true){
         // === DISPARO ==
         if((tiroPosX - tiroD/2) > 0 && (tiroPosX + tiroD/2) < areaJogoX){
             tiroPosX += tiroMovX;
@@ -149,41 +152,59 @@ function Hud(){
     // Deixei apenas para maior flexibiidade no design final
     line(        0, areaJogoY, areaJogoX, areaJogoY);
     line(areaJogoX,        0 , areaJogoX, areaJogoY);
-    Caixa(tela,15,"BLACK",10,455,100,30,"GREY")
+    Caixa(            tela  ,15,"BLACK",10 ,455,100,30,"GREY")
     Caixa("PONTOS: "+ pontos,15,"BLACK",120,455,100,30,"GREY")
-    Caixa("VIDAS: "+ vidas,15,"BLACK",230,455,100,30,"GREY")
+    Caixa("VIDAS: " + vidas ,15,"BLACK",230,455,100,30,"GREY")
 }
 
 function Arma(){
-    fill("ORANGE");
-    beginShape(TRIANGLES);
-
-    vertex(verEsqX,verEsqY);
-    vertex(verCenX,verCenY);
-    vertex(verDirX,verDirY);
-
-    endShape();
+    
+    if(tiroDisparado === false){
+        tiroMovX =  1//verCenX; // Apenas placeholder
+        tiroMovY = -1;//verCenY; // Apenas placeholder
+    }
+    
+    if(keyIsDown(32)){
+        tiroDisparado = true;
+        tiroD = 15;
+    }
+    
+    if(armaAngulo >= -60 && armaAngulo <= 60){
+        if(keyIsDown(LEFT_ARROW)){
+            armaAngulo -= armaAngulo * 1;
+        }else if(keyIsDown(RIGHT_ARROW)){
+            armaAngulo += armaAngulo * 1;
+        }
+    }
+    push();
+        translate(areaJogoX/2,areaJogoY - 10);
+        rotate(30);
+        fill("ORANGE");
+        triangle(armaEsqX,armaEsqY,
+                 armaCenX,armaCenY,
+                 armaDirX,armaDirY);
+    pop();
 }
 
 function ConfigTela(tela) {
     if(tela === "FASE 1"){
         // Variaveis da arma
-        verEsqX = areaJogoX/2 - 10;
-        verEsqY = areaJogoY;
-        
-        verCenX = areaJogoX/2;
-        verCenY = areaJogoY - 30;
-        
-        verDirX = areaJogoX/2 + 10;
-        verDirY = areaJogoY;        
+        armaEsqX = -10;
+        armaEsqY =  10;
+        armaCenX =   0;
+        armaCenY = -15;
+        armaDirX =  10;
+        armaDirY =  10;        
+        armaAngulo = 0;
 
         // Variaveis do projetil
         tiroD = 15;
-        tiroPosX = verCenX;
-        tiroPosY = verCenY;
-        tiroMovX = 6;
-        tiroMovY = -3;
-        
+        tiroPosX = areaJogoX/2;
+        tiroPosY = areaJogoY - 10;
+        tiroMovX = -1;
+        tiroMovY = -1;
+        tiroDisparado = false;
+
         // Variaveis do alvo
         alvoD = 40;
         alvoPosX = areaJogoX/2;
