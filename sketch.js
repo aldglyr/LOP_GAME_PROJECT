@@ -4,10 +4,10 @@ const canvaY = 500;
 
 // Tamanho da area de jogo
 const areaJogoX = canvaX;
-const areaJogoY = canvaY - 75;
+const areaJogoY = canvaY - 60;
 
 // Variaveis do jogo
-var tentativas = 1;
+var vidas = 1;
 var jogada = 0;
 var pontos = 0;
 
@@ -34,17 +34,15 @@ var blocoMovX = 0;
 var blocoMovY = 0;
 
 // Variaveis da arma
-var verEsqX = areaJogoX/2 - 10;
-var verEsqY = areaJogoY;
-
-var verCenX = areaJogoX/2;
-var verCenY = areaJogoY - 30;
-
-var verDirX = areaJogoX/2 + 10;
-var verDirY = areaJogoY;
+var verEsqX = 0; //areaJogoX/2 - 10;
+var verEsqY = 0; //areaJogoY;
+var verCenX = 0; //areaJogoX/2;
+var verCenY = 0; //areaJogoY - 30;
+var verDirX = 0; //areaJogoX/2 + 10;
+var verDirY = 0; //areaJogoY;
 
 // Variaveis de inicializacao
-var tela = "TELA_1";
+var tela = "FASE 1";
 var telaSet = true;
 
 function setup(){
@@ -59,12 +57,12 @@ function draw(){
         BotaoCreditos ("CREDITOS" ,15 ,"WHITE",380,125,110,30,"BLACK");
     }
     
-    if(tela === "TELA_1") {
-        if(tentativas > 0){
+    if(tela === "FASE 1") {
+        if(vidas > 0){
             background("GREEN");
             
             if(telaSet){
-                ConfigTela("TELA_1");
+                ConfigTela("FASE 1");
             }
             
             Hud();
@@ -81,7 +79,7 @@ function draw(){
                voltar pra tela inicial
             */
         }
-        BotaoVoltarIniciar("VOLTAR",15,"WHITE",380,450,110,30,"GREY")
+        BotaoVoltarIniciar("VOLTAR",15,"WHITE",380,455,110,30,"GREY")
     }
     
     if(tela === "CONTROLES") {
@@ -133,14 +131,11 @@ function Projetil(){
         if((tiroPosY - tiroD/2) > 0 && (tiroPosY + tiroD/2) < areaJogoY){
             tiroPosY += tiroMovY;
         }else{
-            // === CONDICAO PARA DESTUICAO DO PROJETIL E RESET DO JOGO ===
+            // === DESTUICAO DO PROJETIL E DIMINUICAO DAS TENTATIVAS ===
             tiroD = 0;
             keyCode = 3;
-            console.log("x: " + tiroPosX + ", y: " + tiroPosY);
-            console.log("botao tentar");
             telaSet = true;
-            tentativas--;
-//            noLoop();
+            vidas--;
         }
     }
     
@@ -154,8 +149,9 @@ function Hud(){
     // Deixei apenas para maior flexibiidade no design final
     line(        0, areaJogoY, areaJogoX, areaJogoY);
     line(areaJogoX,        0 , areaJogoX, areaJogoY);
-    Caixa("PONTOS: "+ pontos,15,"BLACK",20,450,110,30,"GREY")
-    Caixa("TENTATIVAS: "+ tentativas,15,"BLACK",160,450,130,30,"GREY")
+    Caixa(tela,15,"BLACK",10,455,100,30,"GREY")
+    Caixa("PONTOS: "+ pontos,15,"BLACK",120,455,100,30,"GREY")
+    Caixa("VIDAS: "+ vidas,15,"BLACK",230,455,100,30,"GREY")
 }
 
 function Arma(){
@@ -170,7 +166,17 @@ function Arma(){
 }
 
 function ConfigTela(tela) {
-    if(tela === "TELA_1"){
+    if(tela === "FASE 1"){
+        // Variaveis da arma
+        verEsqX = areaJogoX/2 - 10;
+        verEsqY = areaJogoY;
+        
+        verCenX = areaJogoX/2;
+        verCenY = areaJogoY - 30;
+        
+        verDirX = areaJogoX/2 + 10;
+        verDirY = areaJogoY;        
+
         // Variaveis do projetil
         tiroD = 15;
         tiroPosX = verCenX;
@@ -193,19 +199,10 @@ function ConfigTela(tela) {
         blocoMovX = 0;
         blocoMovY = 0;
         
-        // Variaveis da arma
-        verEsqX = areaJogoX/2 - 10;
-        verEsqY = areaJogoY;
-        
-        verCenX = areaJogoX/2;
-        verCenY = areaJogoY - 30;
-        
-        verDirX = areaJogoX/2 + 10;
-        verDirY = areaJogoY;        
         
         telaSet = false;
     }
-    if(tela === "TELA_2"){
+    if(tela === "FASE 2"){
         // Variaveis do projetil
         tiroD = 15;
         tiroPosX = areaJogoX/2;
@@ -231,7 +228,7 @@ function ConfigTela(tela) {
         telaSet = false;
 
     }
-    if(tela === "TELA_3"){
+    if(tela === "FASE 3"){
         // Variaveis do projetil
         tiroD = 15;
         tiroPosX = areaJogoX/2;
@@ -262,8 +259,8 @@ function ConfigTela(tela) {
 function BotaoJogo(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor){
     if(Botao(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor)){
         // Variaveis do jogo
-        tela = "TELA_1";
-        tentativas = 1;
+        tela = "FASE 1";
+        vidas = 1;
         jogada = 0;
         pontos = 0;
     }
