@@ -46,13 +46,14 @@ var armaAngulo = 0
 
 /* Variaveis de inicializacao ***************************************/
 var tela = "INICIO";
-var telaSet = true;
+var fase = "INICIO";
+var faseSet = true;
 
 function setup(){
     createCanvas(canvaX, canvaY);
     angleMode(DEGREES);
     frameRate(60);
-    ConfigTela(tela);
+    ConfigFase(fase);
 }
 
 function draw(){
@@ -70,12 +71,12 @@ function draw(){
         Arma();
     }
 
-    if(tela === "FASE 1"){
+    if(tela === "JOGO"){
         if(vidas > 0){
             background("GREEN");
 
-            if(telaSet){
-                ConfigTela(tela);
+            if(faseSet){
+                ConfigFase(fase);
             }
 
             Hud();
@@ -208,7 +209,7 @@ function Tiro(){
                alvo, reconfiguracao da nova tentativa
             */
             tiroD = 0;
-            telaSet = true;
+            faseSet = true;
             vidas--;
         }
         
@@ -223,7 +224,7 @@ function Tiro(){
             tiroD = 0;
             tiroMovX = 0;
             tiroMovY = 0;
-            telaSet = true;
+            faseSet = true;
             vidas--;
         }
         
@@ -236,9 +237,9 @@ function Tiro(){
             tiroMovX = 0;
             tiroMovY = 0;
             pontos++;
-            telaSet = true;
-            tela = "FASE " + parseInt(pontos + 1);
-            Caixa(tela,15,"BLACK",50,250,110,30,"WHITE")
+            faseSet = true;
+            fase = "FASE " + parseInt(pontos + 1);
+            Caixa(fase,15,"BLACK",50,250,110,30,"WHITE")
            }
 
     fill("BLUE");
@@ -284,8 +285,8 @@ function Bloco(){
     }
 }
 
-function ConfigTela(tela) {
-    if(tela === "INICIO"){
+function ConfigFase(fase) {
+    if(fase === "INICIO"){
         areaJogoX = canvaX -130;
         areaJogoY
     
@@ -314,10 +315,10 @@ function ConfigTela(tela) {
         blocoMovY = -1;
         
         /* Variaveis de inicializacao *******************************/
-        telaSet = false;
+        faseSet = false;
     }
     
-    if(tela === "CONTROLES"){
+    if(fase === "CONTROLES"){
         areaJogoX = canvaX;
         areaJogoY = canvaY - 60;
 
@@ -340,10 +341,10 @@ function ConfigTela(tela) {
         tiroDisparado = false;
         
         /* Variaveis de inicializacao *******************************/
-        telaSet = false;
+        faseSet = false;
     }
 
-    if(tela === "FASE 1"){
+    if(fase === "FASE 1"){
         areaJogoX = canvaX;
         areaJogoY = canvaY - 60;
     
@@ -389,9 +390,9 @@ function ConfigTela(tela) {
         blocoMovY = 0;
         
         /* Variaveis de inicializacao *******************************/
-        telaSet = false;
+        faseSet = false;
     }
-    if(tela === "FASE 2"){
+    if(fase === "FASE 2"){
         areaJogoX = canvaX;
         areaJogoY = canvaY - 60;
     
@@ -437,9 +438,9 @@ function ConfigTela(tela) {
         blocoMovY = 0;
         
         /* Variaveis de inicializacao *******************************/
-        telaSet = false;
+        faseSet = false;
     }
-    if(tela === "FASE 3"){
+    if(fase === "FASE 3"){
         areaJogoX = canvaX;
         areaJogoY = canvaY - 60;
     
@@ -485,7 +486,7 @@ function ConfigTela(tela) {
         blocoMovY = 0;
         
         /* Variaveis de inicializacao *******************************/
-        telaSet = false;
+        faseSet = false;
     }
 }
 
@@ -495,19 +496,20 @@ function BotaoJogo(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor
         /* Define as variaveis de inicio do jogo aqui para permitir a 
            tentativa das outras vidas sem redefinir tudo de novo.
         */
-        tela = "FASE 1";
+        tela = "JOGO";
+        fase = "FASE 1"
         vidas = 5;
         jogada = 0;
         pontos = 0;
         //telaSet = true;
-        ConfigTela(tela);
+        ConfigFase(fase);
     }
 }
 
 function BotaoControles(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor){
     if(Botao(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor)){
         tela = "CONTROLES";
-        ConfigTela(tela)
+        ConfigFase(tela)
     }
 }
 
@@ -520,7 +522,7 @@ function BotaoCreditos(texto, textoTamanho, textoCor, retX, retY, retC, retA, re
 function BotaoVoltarIniciar(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor){
     if(Botao(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor)){
         tela = "INICIO";
-        ConfigTela(tela);
+        ConfigFase(tela);
     }
 }
 
