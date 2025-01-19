@@ -13,6 +13,7 @@ var pontos = 0;
 
 // Variaveis do projetil
 var tiroD = 0;
+var tiroVel = 0;
 var tiroPosX = 0;
 var tiroPosY = 0;
 var tiroMovX = 0;
@@ -50,6 +51,7 @@ var telaSet = true;
 function setup(){
     createCanvas(canvaX, canvaY);
     angleMode(DEGREES);
+    frameRate(30);
 }
 
 function draw(){
@@ -76,11 +78,6 @@ function draw(){
 
         }else{
             Caixa("Fim de Jogo!",15,"BLACK",canvaX/2-55,canvaY/2,110,30,"GREY");
-
-            /* mostrar que perdeu
-               mostrar pontuacao
-               voltar pra tela inicial
-            */
         }
         BotaoVoltarIniciar("VOLTAR",15,"WHITE",380,455,110,30,"GREY")
     }
@@ -130,13 +127,11 @@ function Projetil(){
             tiroMovX = tiroMovX * -1;
             tiroPosX += tiroMovX;
         }
-        
         if((tiroPosY - tiroD/2) > 0 && (tiroPosY + tiroD/2) < areaJogoY){
             tiroPosY += tiroMovY;
         }else{
             // === DESTUICAO DO PROJETIL E DIMINUICAO DAS TENTATIVAS ===
             tiroD = 0;
-            keyCode = 3;
             telaSet = true;
             vidas--;
         }
@@ -159,31 +154,38 @@ function Hud(){
 
 function Arma(){
     
-    if(tiroDisparado === false){
-        tiroMovX =  1//verCenX; // Apenas placeholder
-        tiroMovY = -1;//verCenY; // Apenas placeholder
+    if(armaAngulo >= -60 && armaAngulo <= 60){
+        if(keyIsDown(37) && armaAngulo !== -60){
+            armaAngulo--;
+        }
+        if(keyIsDown(39) && armaAngulo !== 60){
+            armaAngulo++;
+        }
     }
-    
     if(keyIsDown(32)){
         tiroDisparado = true;
         tiroD = 15;
     }
-    
-    if(armaAngulo >= -60 && armaAngulo <= 60){
-        if(keyIsDown(LEFT_ARROW)){
-            armaAngulo -= armaAngulo * 1;
-        }else if(keyIsDown(RIGHT_ARROW)){
-            armaAngulo += armaAngulo * 1;
+    if(tiroDisparado === false){
+        if(armaAngulo < 0){
+            tiroMovX = - tiroVel * abs(sin(armaAngulo));
+        }else{
+            tiroMovX =   tiroVel * abs(sin(armaAngulo));
         }
+        tiroMovY     = - tiroVel * cos(armaAngulo);
+        
+        Caixa("ang: " + armaAngulo ,15,"BLACK",380,420,110,30,"WHITE");
+        Caixa("Tx: " + tiroMovX + ", Ty: " + tiroMovY ,15,"BLACK",380,385,110,30,"WHITE");
     }
     push();
         translate(areaJogoX/2,areaJogoY - 10);
-        rotate(30);
+        rotate(armaAngulo);
         fill("ORANGE");
         triangle(armaEsqX,armaEsqY,
                  armaCenX,armaCenY,
                  armaDirX,armaDirY);
     pop();
+    Caixa("Ax: " + armaCenX + ", Ay: " + armaCenY ,15,"BLACK",380,350,110,30,"WHITE");
 }
 
 function ConfigTela(tela) {
@@ -198,7 +200,8 @@ function ConfigTela(tela) {
         armaAngulo = 0;
 
         // Variaveis do projetil
-        tiroD = 15;
+        tiroD = 0;
+        tiroVel = 15;
         tiroPosX = areaJogoX/2;
         tiroPosY = areaJogoY - 10;
         tiroMovX = -1;
@@ -219,7 +222,6 @@ function ConfigTela(tela) {
         blocoAltH = 50;
         blocoMovX = 0;
         blocoMovY = 0;
-        
         
         telaSet = false;
     }
@@ -281,7 +283,7 @@ function BotaoJogo(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor
     if(Botao(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor)){
         // Variaveis do jogo
         tela = "FASE 1";
-        vidas = 1;
+        vidas = 3;
         jogada = 0;
         pontos = 0;
     }
