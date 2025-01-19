@@ -47,9 +47,9 @@ Exemplo: Ao invés de somente perguntar "Qual o estado que mais produz sal no Br
 - [1,50 ponto] Pelo menos 03 fases / 10 perguntas. 
 
 4. Jogabilidade [2,0 pontos]: 
-- [0,50 ponto] Movimento do personagem (teclado ou mouse);
-- [0,50 ponto] Interface funcional; 
-- [0,50 ponto] Transição de telas/Fases;
+> [0,50 ponto] Movimento do personagem (teclado ou mouse);
+> [0,50 ponto] Interface funcional; 
+> [0,50 ponto] Transição de telas/Fases;
 - [0,50 ponto] Pontuação /Medidor de sucesso (vida) / Limite de tempo;
 
 5. Elementos visuais e sonoros do jogo [2,0 pontos]: 
