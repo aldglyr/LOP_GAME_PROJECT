@@ -1,15 +1,16 @@
 /* Tamanho do canvas ************************************************/
-const canvaX = 500;
-const canvaY = 500;
+const canvaX = 512;
+const canvaY = 512;
 
 /* Tamanho da area de jogo ******************************************/
-var areaJogoX = canvaX;
-var areaJogoY = canvaY - 60;
+var areaJogoX = 0;
+var areaJogoY = 0;
 
 /* Variaveis do jogo ************************************************/
 var vidas = 0;
 var jogada = 0;
 var pontos = 0;
+var pontosMax = 0;
 
 /* Variaveis do projetil ********************************************/
 var tiroD = 0;
@@ -28,10 +29,10 @@ var alvoMovX = 0;
 var alvoMovY = 0;
 
 /* Variaveis do bloco ***********************************************/
-var blocoPosX = 100;
-var blocoPosY = 100;
-var blocoComW = 100;
-var blocoAltH = 100;
+var blocoPosX = 0;
+var blocoPosY = 0;
+var blocoComW = 0;
+var blocoAltH = 0;
 var blocoMovX = 0;
 var blocoMovY = 0;
 
@@ -42,7 +43,7 @@ var armaCenX = 0;
 var armaCenY = 0;
 var armaDirX = 0;
 var armaDirY = 0;
-var armaAngulo = 0
+var armaAngulo = 0;
 
 /* Variaveis de inicializacao ***************************************/
 var tela = "INICIO";
@@ -60,9 +61,13 @@ function draw(){
     if(tela === "INICIO"){
         background("GREY");
 
-        BotaoJogo     ("JOGO"     ,15 ,"BLACK",380, 25,110,30,"GREEN");
-        BotaoControles("CONTROLES",15 ,"BLACK",380, 75,110,30,"ORANGE");
-        BotaoCreditos ("CREDITOS" ,15 ,"WHITE",380,125,110,30,"BLACK");
+        if(faseSet){
+            ConfigFase(fase);
+        }
+
+        BotaoJogo     ("JOGO"     ,15 ,"BLACK",canvaX - 120, 25,110,30,"GREEN");
+        BotaoControles("CONTROLES",15 ,"BLACK",canvaX - 120, 75,110,30,"ORANGE");
+        BotaoCreditos ("CREDITOS" ,15 ,"WHITE",canvaX - 120,125,110,30,"BLACK");
         
         HudDemo();
 
@@ -86,13 +91,18 @@ function draw(){
             Alvo();
         }else{
             Hud();
-            Caixa("Fim de Jogo!",15,"BLACK",canvaX/2-55,canvaY/2,110,30,"GREY");
+            Caixa("FIM DE JOGO",15,"BLACK",canvaX/2-55,canvaY/2,110,30,"GREY");
         }
-
-        BotaoVoltarIniciar("VOLTAR",15,"BLACK",380,455,110,30,"GREY")
+        
+        BotaoVoltarIniciar("VOLTAR",15,"BLACK",canvaX - 120,canvaY-45,110,30,"GREY")
     }
+
     if(tela === "CONTROLES") {
         background("ORANGE");
+
+        if(faseSet){
+            ConfigFase(fase);
+        }
 
         Caixa("CONTROLES",15,"BLACK",canvaX/2-55,30,110,30,"ORANGE");
         
@@ -104,7 +114,7 @@ function draw(){
         Arma();
         Tiro()
         
-        BotaoVoltarIniciar("VOLTAR",15,"BLACK",380,450,110,30,"GREY")
+        BotaoVoltarIniciar("VOLTAR",15,"BLACK",canvaX - 120,canvaY-45,110,30,"GREY")
     }
 
     if(tela === "CREDITOS") {
@@ -113,7 +123,7 @@ function draw(){
         text("DESENVOLVEDOR",250,50);
         text("Aldglyr Dias (aldglyr@outlook.com)",250,100);
         
-        BotaoVoltarIniciar("VOLTAR",15,"WHITE",380,450,110,30,"GREY")
+        BotaoVoltarIniciar("VOLTAR",15,"BLACK",canvaX - 120,canvaY-45,110,30,"GREY")
     }
 }
 
@@ -130,9 +140,9 @@ function HudDemo(){
 function Hud(){
     line(        0, areaJogoY, areaJogoX, areaJogoY);
     line(areaJogoX,        0 , areaJogoX, areaJogoY);
-    Caixa(            tela  ,15,"BLACK",10 ,455,100,30,"GREY")
-    Caixa("PONTOS: "+ pontos,15,"BLACK",120,455,100,30,"GREY")
-    Caixa("VIDAS: " + vidas ,15,"BLACK",230,455,100,30,"GREY")
+    Caixa(            fase  ,15,"BLACK",10 ,canvaY-45,100,30,"GREY")
+    Caixa("PONTOS: "+ pontos,15,"BLACK",120,canvaY-45,100,30,"GREY")
+    Caixa("VIDAS: " + vidas ,15,"BLACK",230,canvaY-45,100,30,"GREY")
 }
 
 function Arma(){
@@ -190,11 +200,6 @@ function Arma(){
 function Tiro(){
     /* Condicao para movimento do tiro ******************************/
     if(tiroDisparado === true){
-        //frameRate(5);
-        //Caixa("Tx: " + round(tiroPosX + tiroD/2) +
-        //      "Ty: " + round(tiroPosY + tiroD/2) +
-        //      "Ax: " + round(blocoPosX - blocoComW) +
-        //      "Ay: " + round(blocoPosY + blocoAltH),15,"BLACK",50,250,110,30,"WHITE")
         if((tiroPosX - tiroD/2) > 0 && (tiroPosX + tiroD/2) < areaJogoX){
             tiroPosX += tiroMovX;
         }else{
@@ -213,8 +218,8 @@ function Tiro(){
             vidas--;
         }
         
-        /* Destricaodo tiro por acertar no bloco e reconfiguracao de
-           nova tentativa.
+        /* Destruicaodo do tiro por acertar no bloco e reconfiguracao
+           de nova tentativa.
         */
         if((tiroPosX + tiroD/2) >= (blocoPosX) &&
            (tiroPosX + tiroD/2) <= (blocoPosX + blocoComW) &&
@@ -237,10 +242,25 @@ function Tiro(){
             tiroMovX = 0;
             tiroMovY = 0;
             pontos++;
-            faseSet = true;
-            fase = "FASE " + parseInt(pontos + 1);
-            Caixa(fase,15,"BLACK",50,250,110,30,"WHITE")
-           }
+            
+            if(pontos <= pontosMax){
+                faseSet = true;
+                fase = "FASE " + parseInt(pontos + 1);
+            }else{
+                Hud();
+                Caixa("PARABÉNS",15,"BLACK",canvaX/2-55,canvaY/2,110,30,"GREY");
+                
+                alvoMovX = 0;
+                alvoMovY = 0;
+                tiroMovX = 0;
+                tiroMovY = 0;
+                blocoMovX = 0;
+                blocoMovY = 0;
+                tiroPosX = 0;
+                tiroPosY = 0;
+                tiroD = 0;
+            }
+        }
 
     fill("BLUE");
     circle(tiroPosX,tiroPosY,tiroD);
@@ -288,7 +308,7 @@ function Bloco(){
 function ConfigFase(fase) {
     if(fase === "INICIO"){
         areaJogoX = canvaX -130;
-        areaJogoY
+        areaJogoY = canvaY - 60;
     
         /* Variaveis da arma ****************************************/
         armaEsqX = -10;
@@ -367,26 +387,18 @@ function ConfigFase(fase) {
         tiroDisparado = false;
 
         /* Variaveis do alvo ****************************************/
-        alvoD = 40;
-        //alvoPosX = random(50,areaJogoX -50);
-        //alvoPosY = random(25,75);
-        
-        alvoPosX = 10;
-        alvoPosY = 50
-
-        alvoMovX = 0;
-        alvoMovY = 0;
+        alvoD = 50;
+        alvoPosX = random(50,areaJogoX -50);
+        alvoPosY = random(25,75);
+        alvoMovX = -1;
+        alvoMovY = -1;
         
         /* Variaveis do bloco ***************************************/
-        //blocoPosX = random(100, areaJogoX -150);
-        //blocoPosY = random(112,150);
-
-        blocoPosX = 300;
-        blocoPosY = 100
-
-        blocoComW = 20;
-        blocoAltH = 200;
-        blocoMovX = 0;
+        blocoPosX = areaJogoX/2;
+        blocoPosY = 125;
+        blocoComW = 75;
+        blocoAltH = 20;
+        blocoMovX = 1;
         blocoMovY = 0;
         
         /* Variaveis de inicializacao *******************************/
@@ -416,25 +428,17 @@ function ConfigFase(fase) {
 
         /* Variaveis do alvo ****************************************/
         alvoD = 40;
-        //alvoPosX = random(50,areaJogoX -50);
-        //alvoPosY = random(25,75);
-        
-        alvoPosX = 400;
-        alvoPosY = 50
-
-        alvoMovX = 0;
-        alvoMovY = 0;
+        alvoPosX = random(50,areaJogoX -50);
+        alvoPosY = random(25,75);
+        alvoMovX = 2;
+        alvoMovY = 1;
         
         /* Variaveis do bloco ***************************************/
-        //blocoPosX = random(100, areaJogoX -150);
-        //blocoPosY = random(112,150);
-
-        blocoPosX = 300;
-        blocoPosY = 100
-
-        blocoComW = 10;
-        blocoAltH = 10;
-        blocoMovX = 0;
+        blocoPosX = areaJogoX/2;
+        blocoPosY = 125;
+        blocoComW = 150;
+        blocoAltH = 20;
+        blocoMovX = 2;
         blocoMovY = 0;
         
         /* Variaveis de inicializacao *******************************/
@@ -463,27 +467,19 @@ function ConfigFase(fase) {
         tiroDisparado = false;
 
         /* Variaveis do alvo ****************************************/
-        alvoD = 40;
-        //alvoPosX = random(50,areaJogoX -50);
-        //alvoPosY = random(25,75);
-        
-        alvoPosX = 250;
-        alvoPosY = 50;
-
+        alvoD = 30;
+        alvoPosX = 250;//random(50,areaJogoX -50);
+        alvoPosY = 75;//random(25,75);
         alvoMovX = 0;
         alvoMovY = 0;
         
         /* Variaveis do bloco ***************************************/
-        //blocoPosX = random(100, areaJogoX -150);
-        //blocoPosY = random(112,150);
-
-        blocoPosX = 250-25;
-        blocoPosY = 100
-
-        blocoComW = 50;
-        blocoAltH = 50;
-        blocoMovX = 0;
-        blocoMovY = 0;
+        blocoPosX = areaJogoX/2;
+        blocoPosY = 125;
+        blocoComW = 5;
+        blocoAltH = 5;
+        blocoMovX = 3;
+        blocoMovY = 1;
         
         /* Variaveis de inicializacao *******************************/
         faseSet = false;
@@ -501,7 +497,7 @@ function BotaoJogo(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor
         vidas = 5;
         jogada = 0;
         pontos = 0;
-        //telaSet = true;
+        pontosMax = 3;
         ConfigFase(fase);
     }
 }
@@ -509,7 +505,9 @@ function BotaoJogo(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor
 function BotaoControles(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor){
     if(Botao(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor)){
         tela = "CONTROLES";
-        ConfigFase(tela)
+        fase = "CONTROLES";
+        faseSet = true;
+        vidas = 1;
     }
 }
 
@@ -522,7 +520,8 @@ function BotaoCreditos(texto, textoTamanho, textoCor, retX, retY, retC, retA, re
 function BotaoVoltarIniciar(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor){
     if(Botao(texto, textoTamanho, textoCor, retX, retY, retC, retA, retCor)){
         tela = "INICIO";
-        ConfigFase(tela);
+        fase = "INICIO";
+        ConfigFase(fase);
     }
 }
 
