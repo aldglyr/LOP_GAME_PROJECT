@@ -23,14 +23,6 @@ Exemplo: Ao invés de somente perguntar "Qual o estado que mais produz sal no Br
 
 # CRITÉRIOS DE AVALIAÇÃO DO JOGO 
 
-0,25
-1,00
-0,50
-0,50
-0,50
-- - - 
-2,75
-
 1. Comum e obrigatório [1,5 pontos + 1,0 ponto extra]: 
 > [0,25 ponto] Estruturas condicionais;
 - [0,25 ponto] Estrutura de repetição;
@@ -43,72 +35,20 @@ Exemplo: Ao invés de somente perguntar "Qual o estado que mais produz sal no Br
 > [0,50 ponto] Créditos. 
 
 3. Mecânica do jogo [3,0 pontos]: 
-- [1,50 ponto] Detecção de colisões entre objetos Identificação de opções corretas/incorretas ;
-- [1,50 ponto] Pelo menos 03 fases / 10 perguntas. 
+> [1,50 ponto] Detecção de colisões entre objetos Identificação de opções corretas/incorretas ;
+> [1,50 ponto] Pelo menos 03 fases / 10 perguntas. 
 
 4. Jogabilidade [2,0 pontos]: 
 > [0,50 ponto] Movimento do personagem (teclado ou mouse);
 > [0,50 ponto] Interface funcional; 
 > [0,50 ponto] Transição de telas/Fases;
-- [0,50 ponto] Pontuação /Medidor de sucesso (vida) / Limite de tempo;
+> [0,50 ponto] Pontuação /Medidor de sucesso (vida) / Limite de tempo;
 
 5. Elementos visuais e sonoros do jogo [2,0 pontos]: 
 - [1,00 ponto] Utilize sons;
 - [1,00 ponto] Utilize Imagens.
 
 6. Extras: 
-- [0,50 ponto] Níveis de dificuldade;
+> [0,50 ponto] Níveis de dificuldade;
 - [0,50 ponto] 3+ inimigos diferentes;
 - [0,50 ponto] Pausar.
-
-=== ESTRUTURA
-
-tentativas
-placar
-fases
-
-=== tela inicio
-clicar botao [JOGO]      > tela |fase 1|
-clicar botao [controles] > tela |controles|
-clicar botao [CREDITOS]  > tela |creditos|
-
-=== tela fase 1
-se tentativa = 0
-    > {aviso que perdeu} | {mostrar pontos}
-    > tela [INICIO]
-
-se errar alvo
-    tentativa = -1
-    > tela |fase 1|
-se acertar bloco
-    tentativa = -1
-    > tela |fase 1|
-se o tempo passar
-    tentativa = -1
-    > tela |fase 1|
-se acertar alvo
-    placar = +1
-    > tela |fase 2|
-
-
-
-
-
-
-
-
-
-
-
-
-=== TELAS
-
-INICIO
-
-TELA_1
-TELA_2
-TELA_3
-
-CONTROLES
-CREDITOS
-

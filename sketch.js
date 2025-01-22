@@ -462,22 +462,22 @@ function ConfigFase(fase) {
         tiroVel = 15;
         tiroPosX = areaJogoX/2;
         tiroPosY = areaJogoY - 10;
-        tiroMovX = -1;
+        tiroMovX = -2;
         tiroMovY = -1;
         tiroDisparado = false;
 
         /* Variaveis do alvo ****************************************/
         alvoD = 30;
-        alvoPosX = 250;//random(50,areaJogoX -50);
-        alvoPosY = 75;//random(25,75);
-        alvoMovX = 0;
-        alvoMovY = 0;
+        alvoPosX = random(50,areaJogoX -50);
+        alvoPosY = random(25,75);
+        alvoMovX = 2;
+        alvoMovY = 2;
         
         /* Variaveis do bloco ***************************************/
         blocoPosX = areaJogoX/2;
         blocoPosY = 125;
-        blocoComW = 5;
-        blocoAltH = 5;
+        blocoComW = 125;
+        blocoAltH = 20;
         blocoMovX = 3;
         blocoMovY = 1;
         
